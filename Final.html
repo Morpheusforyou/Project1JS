@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Currency Converter</title>
+  <style>
+    body {
+      background-color: cadetblue;
+      margin: 0;
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden; 
+    }
+
+    .container {
+      width: 80%;
+      max-width: 600px;
+      padding: 20px;
+      background-color: rgba(255, 255, 255, 0.5);
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      text-align: center;
+    }
+
+    h1 {
+      color: #333;
+    }
+
+    input, select, button {
+      margin: 10px;
+      padding: 10px;
+      font-size: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    button {
+      background-color: #333;
+      color: white;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #555;
+    }
+
+    #result {
+      margin-top: 20px;
+      font-size: 1.2rem;
+      color: #333;
+    }
+
+    #hoverCircle {
+      position: fixed;
+      width: 50px;
+      height: 50px;
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.8) 30%, rgba(255, 255, 255, 0) 100%);
+      border-radius: 50%;
+      pointer-events: none;
+      mix-blend-mode: lighten;
+      transition: transform 0.05s;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Currency Converter</h1>
+    <input type="number" id="amount" placeholder="Enter amount">
+    <select id="fromCurrency">
+      <option value="USD">USD</option>
+      <option value="INR">INR</option>
+    </select>
+    to
+    <select id="toCurrency">
+      <option value="USD">USD</option>
+      <option value="INR">INR</option>
+    </select>
+    <button id="convertBtn">Convert</button>
+    <h2 id="result"></h2>
+  </div>
+  <div id="hoverCircle"></div>
+  <script>
+    const hoverCircle = document.getElementById('hoverCircle');
+    document.addEventListener('mousemove', (event) => {
+      hoverCircle.style.left = `${event.pageX - hoverCircle.offsetWidth / 2}px`;
+      hoverCircle.style.top = `${event.pageY - hoverCircle.offsetHeight / 2}px`;
+    });
+
+    document.getElementById('convertBtn').addEventListener('click', () => {
+      const amount = parseFloat(document.getElementById('amount').value);
+      const fromCurrency = document.getElementById('fromCurrency').value;
+      const toCurrency = document.getElementById('toCurrency').value;
+
+      const rates = {
+        USD: { INR: 82, USD: 1 },
+        INR: { USD: 0.012, INR: 1 }
+      };
+
+      if (!amount || isNaN(amount)) {
+        document.getElementById('result').innerText = "Enter a valid amount!";
+        return;
+      }
+
+      const convertedAmount = (amount * rates[fromCurrency][toCurrency]).toFixed(2);
+      document.getElementById('result').innerText =
+        `${amount} ${fromCurrency} = ${convertedAmount} ${toCurrency}`;
+    });
+  </script>
+</body>
+</html>
